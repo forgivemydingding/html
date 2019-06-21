@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script>
+    var ajaxData = {
+        type: "GET",
+        url: "/act/actUser/role",  //url !!!!
+        async: "true",  //in chinese is 'yi-bu'
+        data: null,
+        dataType: "text",
+        contentType: "application/x-www-form-urlencoded",
+        beforeSend: function () {},
+        success: function () {
+            console.log("success");
+        },
+        error: function () {
+            console.log("error");
+        }
+    }
+    ajaxData.beforeSend()
+    var xhr = createxmlHttpRequest();
+    xhr.responseType = ajaxData.dataType;
+    xhr.open(ajaxData.type, ajaxData.url, ajaxData.async);
+    xhr.setRequestHeader("Content-Type", ajaxData.contentType);  //usr to requestHeader
+    //xhr.setRequestHeader("Authorization", "Bearer " + token);  //token is importent
+    xhr.send(convertData(ajaxData.data));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                ajaxData.success(xhr.response);
+                datanav = xhr.response.data;
+            } else {
+                ajaxData.error()
+            }
+        }
+    }
+
+
+    function createxmlHttpRequest() {
+        if (window.ActiveXObject) {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+        } else if (window.XMLHttpRequest) {
+            return new XMLHttpRequest();
+        }
+    }
+
+    function convertData(data) {
+        if (typeof data === 'object') {
+            var convertResult = "";
+            for (var c in data) {
+                convertResult += c + "=" + data[c] + "&";
+            }
+            convertResult = convertResult.substring(0, convertResult.length - 1)
+            return convertResult;
+        } else {
+            return data;
+        }
+    }
+</script>
+
+</html>
